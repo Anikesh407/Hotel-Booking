@@ -66,7 +66,7 @@ const Dashboard = () => {
                 <td className="py-3 px-4 text-gray-700 border-t border-gray-300">
                   {item.user.username}
                 </td>
-                <td className="py-3 px-4 text-gray-700 border-t border-gray-300">
+                <td className="py-3 px-4 text-gray-700 border-t max-sm:hidden border-gray-300 text-center">
                   {item.room.roomType}
                 </td>
                 <td className="py-3 px-4 text-gray-700 border-t border-gray-300 text-center">

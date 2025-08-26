@@ -173,7 +173,7 @@ export const roomsDummyData = [
         "pricePerNight": 249,
         "amenities": ["Free WiFi", "Free Breakfast", "Room Service"],
         "images": [roomImg3, roomImg4, roomImg1, roomImg2],
-        "isAvailable": true,
+        "isAvailable": false,
         "createdAt": "2025-04-10T06:24:06.285Z",
         "updatedAt": "2025-04-10T06:24:06.285Z",
         "__v": 0
