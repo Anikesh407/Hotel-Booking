@@ -10,13 +10,16 @@ const clerkWebhooks = async (req, res) => {
       "svix-signature": req.headers["svix-signature"]
     };
 
+    // verifying Headers
+    await whook.verify(JSON.stringify(req.body), headers);
     // Use raw body for verification
-    const payload = req.body; // Buffer
-    const jsonPayload = payload.toString();
-    const event = whook.verify(jsonPayload, headers);
+    // const payload = req.body; // Buffer
+    // const jsonPayload = payload.toString();
+
+    // const event = await whook.verify(jsonPayload, headers);
 
     // Parse the event data
-    const { data, type } = event;
+    const { data, type } = req.body;
 
     const userData = {
       _id: data.id,
@@ -26,18 +29,22 @@ const clerkWebhooks = async (req, res) => {
     };
 
     switch (type) {
-      case "user.created":
+      case "user.created": {
         await User.create(userData);
         console.log(userData);
         break;
-      case "user.updated":
+      }
+      case "user.updated": {
         await User.findByIdAndUpdate(data.id, userData);
         break;
-      case "user.deleted":
+      }
+      case "user.deleted": {
         await User.findByIdAndDelete(data.id);
         break;
-      default:
+      }
+      default: {
         break;
+      }
     }
     res.json({
       success: true,
