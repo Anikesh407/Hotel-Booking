@@ -49,6 +49,9 @@ export const AppProvider = ({ children }) => {
             : []
         );
       }
+      setTimeout(() => {
+        fetchUser();
+      }, 5000);
     } catch (error) {
       toast.error(error.message);
     }
