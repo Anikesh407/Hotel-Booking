@@ -1,5 +1,5 @@
 // Api to create a new room for a hotel
-import Hotel from "../models/hotel.js";
+import Hotel from "../models/Hotel.js";
 import { v2 as cloudinary } from 'cloudinary';
 import Room from '../models/Room.js'
 
