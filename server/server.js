@@ -16,8 +16,10 @@ connectCloudinary();
 const app = express();
 
 //for accept the request from frontend cross orgin resource sharing
-app.use(cors());
-
+app.use(cors({
+  origin: "https://hotel-booking-frontend-lake.vercel.app", // your frontend URL
+  credentials: true,
+}));
 // Middleware
 app.use(express.json());
 app.use(clerkMiddleware());
