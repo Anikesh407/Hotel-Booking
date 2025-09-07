@@ -16,6 +16,7 @@ export const protect = async (req, res, next) => {
     // Find user in database
     const user = await User.findById(userId);
 
+
     if (!user) {
       return res.status(401).json({
         success: false,

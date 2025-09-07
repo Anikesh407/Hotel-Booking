@@ -1,34 +1,48 @@
-const User = require('../model/user'); // ✅ correct
+const express = require('express')
+const bodyParser = require("body-parser");
+const connectCloudinary = require('./config/cloudinary.js')
+require('dotenv').config()
+const cors = require('cors')
+const connectDB = require('./config/db.js');
 
 
-exports.protect = async (req, res, next) => {
-  try {
-    //  const auth = await req.auth(); // ✅ new Clerk method
-    // const userId = auth?.userId;
-    const { userId } = req.auth()
+connectDB()
+connectCloudinary()
 
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authenticated",
-      });
-    }
+const { clerkMiddleware } = require('@clerk/express');
+const { clerkWebHooks } = require('./controller/clerkwebhooks.js');
+const userRouter = require('./routes/userRoute.js');
+const hotelRouter = require('./routes/hotelRoute.js');
+const roomRouter = require('./routes/roomRoutes.js');
+const bookingRouter = require('./routes/bookingRoutes.js');
+const { stripeWebhooks } = require('./controller/stripeWebhooks.js');
 
-    const currentUser = await User.findById(userId);
-    if (!currentUser) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
 
-    req.user = currentUser;
-    next();
-  } catch (error) {
-    console.error("Protect middleware error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error in protect middleware",
-    });
-  }
-};
+const app = express()
+app.use(cors()) //Enables cross-origin resource sharing
+
+// API to listen to Stripe WebHooks
+app.post('/api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)
+
+// app.use('/api/clerk', bodyParser.raw({ type: 'application/json' }));
+app.post('/api/clerk', bodyParser.raw({ type: 'application/json' }), clerkWebHooks);
+
+// Middleware
+app.use(express.json())
+app.use(clerkMiddleware())
+
+app.get('/', (req, res) => {
+  res.send("API is working aur Nodemon Lga diya h")
+})
+
+app.use('/api/user', userRouter)
+app.use('/api/hotels', hotelRouter)
+app.use('/api/rooms', roomRouter)
+app.use('/api/bookings', bookingRouter)
+
+
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+  console.log(`Server Started at port ${PORT}`)
+)
