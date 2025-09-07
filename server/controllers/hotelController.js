@@ -5,6 +5,7 @@ export const registerHotel = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
       return res.status(401).json({
+
         success: false,
         message: "User not authenticated"
       });

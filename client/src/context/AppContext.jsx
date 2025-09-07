@@ -48,10 +48,11 @@ export const AppProvider = ({ children }) => {
             ? data.recentSearchedCities
             : []
         );
+      } else {
+        setTimeout(() => {
+          fetchUser();
+        }, 5000);
       }
-      setTimeout(() => {
-        fetchUser();
-      }, 5000);
     } catch (error) {
       toast.error(error.message);
     }
