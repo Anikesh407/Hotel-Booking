@@ -5,23 +5,34 @@ import Room from '../models/Room.js'
 
 export const createRoom = async (req, res) => {
   try {
+    console.log("createRoom called, files:", req.files?.length || 0);
+    
     const { roomType, pricePerNight, amenities } = req.body;
     const hotel = await Hotel.findOne({ owner: req.user._id });
     if (!hotel) {
-      return res.json({
+      return res.status(404).json({
         success: false,
         message: "No Hotel found"
       })
     }
-    // upload images to cloudinary
 
+    // Check if files were uploaded
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one image is required"
+      })
+    }
+
+    // upload images to cloudinary
     const uploadImages = req.files.map(async (file) => {
       const response = await cloudinary.uploader.upload(file.path);
-
       return response.secure_url;
     })
+    
     // wait for all uploads to complete
     const images = await Promise.all(uploadImages);
+    
     await Room.create({
       hotel: hotel._id,
       roomType,
@@ -29,18 +40,18 @@ export const createRoom = async (req, res) => {
       amenities: JSON.parse(amenities),
       images,
     })
+    
     res.json({
       success: true,
       message: "Room created successfully"
-    }
-    )
+    })
   } catch (error) {
-    res.json({
+    console.error("createRoom error:", error);
+    res.status(500).json({
       success: false,
       message: error.message
     })
   }
-
 }
 // Api to get All rooms 
 export const getRooms = async (req, res) => {
