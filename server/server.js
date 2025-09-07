@@ -16,20 +16,52 @@ connectDB();
 connectCloudinary();
 const app = express();
 
-//for accept the request from frontend cross orgin resource sharing
-app.use(cors({
-  origin: [
-    "http://localhost:5173", // Local development
-    "https://hotel-booking-frontend-lake.vercel.app", // Deployed frontend
-    process.env.FRONTEND_URL // Environment variable fallback
-  ].filter(Boolean), // Remove any undefined values
+// CORS configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://hotel-booking-frontend-lake.vercel.app",
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+  console.log('OPTIONS request received from:', req.headers.origin);
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
+});
 // Middleware
 app.use(express.json({ limit: '50mb' })); // Increase JSON payload limit
 app.use(express.urlencoded({ limit: '50mb', extended: true })); // Increase URL-encoded payload limit
+
+// Debug middleware to log requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+  next();
+});
+
 app.use(clerkMiddleware());
 
 
