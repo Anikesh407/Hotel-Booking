@@ -24,10 +24,10 @@ const corsOptions = {
       "https://hotel-booking-frontend-lake.vercel.app",
       process.env.FRONTEND_URL
     ].filter(Boolean);
-    
+
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -42,25 +42,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// Handle preflight requests explicitly
-app.options('*', (req, res) => {
-  console.log('OPTIONS request received from:', req.headers.origin);
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.sendStatus(200);
-});
 // Middleware
 app.use(express.json({ limit: '50mb' })); // Increase JSON payload limit
 app.use(express.urlencoded({ limit: '50mb', extended: true })); // Increase URL-encoded payload limit
 
-// Debug middleware to log requests
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin}`);
-  next();
-});
+
 
 app.use(clerkMiddleware());
 
@@ -90,14 +76,14 @@ app.use((error, req, res, next) => {
       });
     }
   }
-  
+
   if (error.message === 'Only image files are allowed!') {
     return res.status(400).json({
       success: false,
       message: 'Only image files are allowed!'
     });
   }
-  
+
   console.error('Global error handler:', error);
   res.status(500).json({
     success: false,
