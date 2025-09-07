@@ -17,8 +17,14 @@ const app = express();
 
 //for accept the request from frontend cross orgin resource sharing
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
-  credentials: true
+  origin: [
+    "http://localhost:5173", // Local development
+    "https://hotel-booking-frontend-lake.vercel.app", // Deployed frontend
+    process.env.FRONTEND_URL // Environment variable fallback
+  ].filter(Boolean), // Remove any undefined values
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 // Middleware
 app.use(express.json());
