@@ -1,9 +1,17 @@
 import User from "../models/User.js";
+import { getAuth } from "@clerk/express";
 
 export const protect = async (req, res, next) => {
   try {
-    // Modern Clerk syntax - req.auth() is now a function
-    const auth = req.auth();
+    // Support both Clerk styles: req.auth() (new) and getAuth(req) / req.auth (older)
+    let auth;
+    if (typeof req.auth === "function") {
+      auth = req.auth();
+    } else if (req.auth) {
+      auth = req.auth;
+    } else {
+      auth = getAuth?.(req);
+    }
     
     if (!auth || !auth.userId) {
       return res.status(401).json({
@@ -13,7 +21,6 @@ export const protect = async (req, res, next) => {
     }
 
     const userId = auth.userId;
-    console.log("Clerk userId:", userId);
     
     // Find user in database
     const user = await User.findById(userId);
