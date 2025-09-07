@@ -36,7 +36,7 @@ const bookingSchema = new mongoose.Schema({
     required: true,
     default: "Pay At Hotel"
   },
-  ispaid: {
+  isPaid: {
     type: Boolean,
     default: false,
   }
