@@ -3,15 +3,24 @@ import { Webhook } from "svix";
 
 const clerkWebhooks = async (req, res) => {
   try {
-    const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+    const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+    if (!WEBHOOK_SECRET) {
+      throw new Error("Missing CLERK_WEBHOOK_SECRET in env");
+    }
+
+    const wh = new Webhook(WEBHOOK_SECRET);
+
     const headers = {
       "svix-id": req.headers["svix-id"],
       "svix-timestamp": req.headers["svix-timestamp"],
       "svix-signature": req.headers["svix-signature"],
     };
 
-    // Verify and get event
-    const event = await whook.verify(JSON.stringify(req.body), headers);
+    // 🚨 req.body is already a Buffer (because of bodyParser.raw)
+    const payload = req.body;
+
+    // Verify and parse
+    const event = wh.verify(payload, headers);
     const { data, type } = event;
 
     switch (type) {
@@ -43,7 +52,7 @@ const clerkWebhooks = async (req, res) => {
       }
 
       default:
-        break;
+        console.log(`Unhandled event type: ${type}`);
     }
 
     res.status(200).json({
