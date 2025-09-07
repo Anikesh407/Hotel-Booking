@@ -27,7 +27,7 @@ app.post('/api/clerk', bodyParser.raw({ type: 'application/json' }), clerkWebhoo
 app.use(express.json());
 app.use(clerkMiddleware());
 
-app.get('/', (req, res) => res.send("<h1>Api is working fine go to frontend</h1>"));
+app.get('/', (req, res) => res.send("<h1 >Api is working fine go to frontend to send the request</h1>"));
 
 app.use('/api/user', userRouter);
 app.use('/api/hotels', hotelRouter);
