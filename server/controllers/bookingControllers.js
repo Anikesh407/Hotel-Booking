@@ -76,8 +76,7 @@ export const createBooking = async (req, res) => {
       subject: 'Hotel Booking Details',
       html: `
     <h2>Your Booking Details<h2/>
-    <P>Dear ${req.user.
-          username}</P>
+    <p>Dear ${req.user.username}</p>
     <p>Thank you so much for your booking! We’re delighted to have the opportunity to host you and ensure your experience is a memorable one. Please find your booking details below:</p>
 
     <ul>
@@ -89,7 +88,7 @@ export const createBooking = async (req, res) => {
    
 
     </ul>
-    ${booking.ispaid ? '<p>We’re happy to confirm that your payment has been successfully received. Your booking is now fully secured</p>' : '<p><strong>Note:</strong> Your booking is confirmed, but payment is still pending. Please complete the payment at your earliest convenience to secure your reservation.</p>'
+    ${booking.isPaid ? '<p>We’re happy to confirm that your payment has been successfully received. Your booking is now fully secured</p>' : '<p><strong>Note:</strong> Your booking is confirmed, but payment is still pending. Please complete the payment at your earliest convenience to secure your reservation.</p>'
         }
    <p>We can’t wait to welcome you!</p>
    <p>If you’d like to make any changes, just let us know.</p>
