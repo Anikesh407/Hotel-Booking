@@ -16,8 +16,17 @@ dotenv.config();
 connectDB();
 connectCloudinary();
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://hotel-booking-frontend-lake.vercel.app", // your frontend domain
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true, // if using cookies or auth headers
+}));
 
+// Handle preflight requests (important for Vercel)
+app.options("*", cors());
 
 
 // due to insert the value in Db we use Post
