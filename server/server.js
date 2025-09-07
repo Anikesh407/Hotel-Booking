@@ -16,7 +16,10 @@ connectCloudinary();
 const app = express();
 
 //for accept the request from frontend cross orgin resource sharing
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true
+}));
 // Middleware
 app.use(express.json());
 app.use(clerkMiddleware());

@@ -2,17 +2,29 @@
 import User from "../models/User.js";
 export const getUserData = async (req, res) => {
   try {
+    console.log("getUserData called, req.user:", req.user);
+    
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found in request"
+      });
+    }
+
     const role = req.user.role;
-    const recentSearchedCities = req.user.recentSearchedCities;
+    const recentSearchedCities = req.user.recentSearchedCities || [];
+    
+    console.log("Returning user data:", { role, recentSearchedCities });
+    
     res.json({
       success: true,
       role,
       recentSearchedCities
-    })
-
+    });
 
   } catch (error) {
-    res.json({
+    console.error("getUserData error:", error);
+    res.status(500).json({
       success: false,
       message: error.message,
     })
