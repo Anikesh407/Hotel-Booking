@@ -166,9 +166,9 @@ const AllRooms = () => {
               src={room.images[0]}
               alt="hotel-img"
               title="View Room Details"
-              className="h-65 w-full md:min-w-100   rounded-xl shadow-lg object-cover cursor-pointer"
+              className="min-w-110 h-64 md:h-72 w-full md:w-110  object-cover rounded-xl shadow-lg cursor-pointer"
             />
-            <div className="md:w-1/2 flex flex-col gap-1 md:gap-2">
+            <div className="md:w-1/2 flex flex-col gap-1">
               <p className="text-gray-500">{room.hotel.city}</p>
               <p
                 onClick={() => {
