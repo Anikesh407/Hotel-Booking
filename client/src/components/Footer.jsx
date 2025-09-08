@@ -9,7 +9,7 @@ const Footer = () => {
           <img
             src={assets.logo}
             alt="logo"
-            className="mb-4 h-8 md:h-9 invert opacity-80"
+            className="mb-4 h-10 w-30 object-cover invert opacity-80"
           />
           <p className="text-sm">
             Discover the worls's most extraordinary place to stay, from boutique
@@ -105,8 +105,8 @@ const Footer = () => {
       <hr className="border-gray-300 mt-8" />
       <div className="flex flex-col md:flex-row gap-2 items-center justify-between py-5">
         <p>
-          © {new Date().getFullYear()}{" "}
-          <a href="https://prebuiltui.com">GreatStack</a>. All rights reserved.
+          © {new Date().getFullYear()} <a href="#">StayYatra</a>. All rights
+          reserved.
         </p>
         <ul className="flex items-center gap-4">
           <li>
