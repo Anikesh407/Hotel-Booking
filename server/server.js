@@ -16,10 +16,7 @@ dotenv.config();
 connectDB();
 connectCloudinary();
 const app = express();
-app.use(cors({
-  origin: "https://hotel-booking-frontend-lake.vercel.app",
-  credentials: true, // if you use cookies/auth
-}));
+app.use(cors());
 
 // due to insert the value in Db we use Post
 app.post('/api/clerk', bodyParser.raw({ type: 'application/json' }), clerkWebhooks);
