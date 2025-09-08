@@ -5,10 +5,10 @@ import Room from '../models/Room.js'
 
 export const createRoom = async (req, res) => {
   try {
-    console.log("createRoom called, files:", req.files?.length || 0);
-    
+
     const { roomType, pricePerNight, amenities } = req.body;
-    const hotel = await Hotel.findOne({ owner: req.user._id });
+    const { userId } = req.auth();
+    const hotel = await Hotel.findOne({ owner: userId });
     if (!hotel) {
       return res.status(404).json({
         success: false,
@@ -29,10 +29,10 @@ export const createRoom = async (req, res) => {
       const response = await cloudinary.uploader.upload(file.path);
       return response.secure_url;
     })
-    
+
     // wait for all uploads to complete
     const images = await Promise.all(uploadImages);
-    
+
     await Room.create({
       hotel: hotel._id,
       roomType,
@@ -40,7 +40,7 @@ export const createRoom = async (req, res) => {
       amenities: JSON.parse(amenities),
       images,
     })
-    
+
     res.json({
       success: true,
       message: "Room created successfully"
