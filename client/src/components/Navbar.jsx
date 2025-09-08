@@ -59,9 +59,16 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0  w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${
+      className={`fixed top-0 left-0  w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 ${
+        isMenuOpen ? "transition-none" : "transition-all duration-500"
+      } z-50 ${
         isScrolled
-          ? "bg-white shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4"
+          ? `${
+              /* Avoid iOS/Safari bug: fixed children are clipped when ancestor has filter/backdrop-blur */
+              isMenuOpen
+                ? "bg-white shadow-md text-gray-700 py-3 md:py-4"
+                : "bg-white shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4"
+            }`
           : "py-4 md:py-6"
       }`}
     >
@@ -161,13 +168,13 @@ const Navbar = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           src={assets.menuIcon}
           alt=""
-          className={`${isScrolled && "invert"} h-4`}
+          className={`${isScrolled && "invert"} h-3`}
         />
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 left-0 w-full h-screen bg-white text-base flex flex-col md:hidden items-center justify-center gap-6 font-medium text-gray-800 transition-all duration-500 ${
+        className={`fixed top-0 left-0 w-full h-screen bg-white text-base flex flex-col md:hidden items-center justify-center gap-6 font-medium text-gray-800 transition-all duration-500  ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -179,9 +186,9 @@ const Navbar = () => {
         </button>
 
         {navLinks.map((link, i) => (
-          <a key={i} href={link.path} onClick={() => setIsMenuOpen(false)}>
+          <Link key={i} to={link.path} onClick={() => setIsMenuOpen(false)}>
             {link.name}
-          </a>
+          </Link>
         ))}
 
         {user && (

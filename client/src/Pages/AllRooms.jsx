@@ -156,7 +156,7 @@ const AllRooms = () => {
         {filteredRooms.map((room) => (
           <div
             key={room._id}
-            className="flex flex-col md:flex-row items-start py-10 gap-6 border-b border-gray-300 last:pb-30 last:border-0"
+            className="flex flex-col md:flex-row items-center md:items-start  py-10 gap-6 border-b border-gray-300 last:pb-30 last:border-0"
           >
             <img
               onClick={() => {
@@ -166,7 +166,7 @@ const AllRooms = () => {
               src={room.images[0]}
               alt="hotel-img"
               title="View Room Details"
-              className=" h-55  md:h-65  md:min-w-100 w-full md:w-100  object-cover rounded-xl shadow-lg cursor-pointer"
+              className=" h-55  md:h-65 w-[90vw]   md:min-w-100  md:w-100  object-cover rounded-xl shadow-lg cursor-pointer"
             />
             <div className="md:w-1/2 flex flex-col gap-2">
               <p className="text-gray-500">{room.hotel.city}</p>
