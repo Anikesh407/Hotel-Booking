@@ -166,7 +166,7 @@ const AllRooms = () => {
               src={room.images[0]}
               alt="hotel-img"
               title="View Room Details"
-              className="h-65 w-100   rounded-xl shadow-lg object-cover cursor-pointer"
+              className="h-65 w-full md:min-w-100   rounded-xl shadow-lg object-cover cursor-pointer"
             />
             <div className="md:w-1/2 flex flex-col gap-1 md:gap-2">
               <p className="text-gray-500">{room.hotel.city}</p>
