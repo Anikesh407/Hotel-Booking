@@ -142,7 +142,7 @@ const AllRooms = () => {
   };
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row  items-center lg:items-start  justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32">
+    <div className="flex flex-col-reverse lg:flex-row  items-start  justify-between pt-25 md:pt-30 px-4 md:px-16 lg:px-24 xl:px-32">
       <div className="flex flex-col items-start text-left">
         <div>
           <h1 className="font-playfair text-4xl md:text-[40px] ">
@@ -156,7 +156,7 @@ const AllRooms = () => {
         {filteredRooms.map((room) => (
           <div
             key={room._id}
-            className="flex flex-col md:flex-row items-center py-10 gap-6 border-b border-gray-300 last:pb-30 last:border-0"
+            className="flex flex-col md:flex-row items-start py-10 gap-6 border-b border-gray-300 last:pb-30 last:border-0"
           >
             <img
               onClick={() => {
@@ -166,9 +166,9 @@ const AllRooms = () => {
               src={room.images[0]}
               alt="hotel-img"
               title="View Room Details"
-              className="min-w-110 h-64 md:h-72 w-full md:w-110  object-cover rounded-xl shadow-lg cursor-pointer"
+              className=" h-55  md:h-65  md:min-w-100 w-full md:w-100  object-cover rounded-xl shadow-lg cursor-pointer"
             />
-            <div className="md:w-1/2 flex flex-col gap-1">
+            <div className="md:w-1/2 flex flex-col gap-2">
               <p className="text-gray-500">{room.hotel.city}</p>
               <p
                 onClick={() => {
