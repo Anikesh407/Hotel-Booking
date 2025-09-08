@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 
 const RoomDetail = () => {
   const { id } = useParams();
-  const { rooms, getToken, axios, navigate, currency } = useAppContext();
+  const { user, rooms, getToken, axios, navigate, currency } = useAppContext();
   const [room, setRoom] = useState(null);
   const [mainImage, setMainImage] = useState(null);
   const [checkInDate, setCheckInDate] = useState(null);
@@ -18,6 +18,7 @@ const RoomDetail = () => {
   const checkAvailability = async () => {
     try {
       // check is check-In date is greater than checkOut date
+
       if (checkInDate >= checkOutDate) {
         toast.error("Check-In date Should be less than check-Out Date");
         return;
@@ -50,6 +51,10 @@ const RoomDetail = () => {
       if (!isAvailable) {
         return checkAvailability();
       } else {
+        if (!user) {
+          toast.error("Please Login to continue!");
+          return;
+        }
         const { data } = await axios.post(
           "/api/bookings/book",
           {
@@ -200,8 +205,11 @@ const RoomDetail = () => {
                 type="number"
                 id="guests"
                 placeholder="1"
-                onChange={(e) => setGuest(e.target.value)}
+                onChange={(e) => {
+                  e.target.value > 0 && setGuest(e.target.value);
+                }}
                 value={guests}
+                min="1"
                 className="max-w-20 rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
                 required
               />
