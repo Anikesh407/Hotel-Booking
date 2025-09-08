@@ -171,7 +171,7 @@ const RoomDetail = () => {
                 onChange={(e) => setCheckInDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
                 placeholder="Check-In"
-                className="w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
+                className="w-full min-w-25 rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
                 required
               />
             </div>
@@ -187,7 +187,7 @@ const RoomDetail = () => {
                 onChange={(e) => setCheckOutDate(e.target.value)}
                 min={checkInDate}
                 disabled={!checkInDate}
-                className="w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
+                className="w-full min-w-25 rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
                 required
               />
             </div>
