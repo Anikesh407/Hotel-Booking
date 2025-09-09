@@ -13,7 +13,7 @@ import ListRoom from "./Pages/hotelOwner/ListRoom";
 import AddRoom from "./Pages/hotelOwner/AddRoom";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext.jsx";
-import Loader from "./components/loader.jsx";
+import Loader from "./components/Loader.jsx";
 
 const App = () => {
   const isOwnerPath = useLocation().pathname.includes("owner");
