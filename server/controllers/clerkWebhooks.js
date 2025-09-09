@@ -1,5 +1,8 @@
 import User from "../models/User.js";
 import { Webhook } from "svix";
+import Hotel from '../models/Hotel.js'
+import Room from "../models/Room.js";
+import Booking from "../models/Booking.js"
 
 const clerkWebhooks = async (req, res) => {
   try {
@@ -47,6 +50,12 @@ const clerkWebhooks = async (req, res) => {
       }
 
       case "user.deleted": {
+        const hotel = await Hotel.findOne({ owner: data.id });
+
+        await Hotel.deleteMany({ owner: data.id });
+
+        await Room.deleteMany({ hotel: hotel._id });
+        await Booking.deleteMany({ user: data.id });
         await User.findByIdAndDelete(data.id);
         break;
       }
