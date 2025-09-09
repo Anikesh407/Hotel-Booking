@@ -7,8 +7,8 @@ const TestCard = () => {
   const card = {
     type: "Use Card for Payments",
     number: "4242424242424242",
-    cvc: "Any 3 digits",
-    expiry: "Any future date",
+    cvc: "Cvc: Any 3 digits",
+    expiry: "Expiry: Any future date",
   };
 
   const handleCopy = () => {
