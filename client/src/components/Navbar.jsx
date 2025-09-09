@@ -194,9 +194,14 @@ const Navbar = () => {
         {user && (
           <button
             className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all"
-            onClick={() =>
-              isOwner ? navigate("/owner") : setShowHotelReg(true)
-            }
+            onClick={() => {
+              if (isOwner) {
+                navigate("/owner"); // first navigate
+                window.scrollTo(0, 0); // then scroll to top
+              } else {
+                setShowHotelReg(true);
+              }
+            }}
           >
             {isOwner ? " Dashboard" : "List Your Hotel"}
           </button>
