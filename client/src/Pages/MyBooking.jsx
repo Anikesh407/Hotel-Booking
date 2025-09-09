@@ -3,6 +3,7 @@ import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import { toast } from "react-hot-toast";
+import TestCard from "../components/TestCard";
 
 const MyBookings = () => {
   const { user, axios, getToken, currency } = useAppContext();
@@ -52,6 +53,7 @@ const MyBookings = () => {
         subTitle="Easily manage your past, current, and upcoming hotel reservations in one place. Plan your trips seamlessly with just a few clicks"
         align="left"
       />
+      <TestCard />
       <div className="max-w-6xl mt-8 w-full text-gray-800">
         <div className="hidden md:grid md:grid-cols-[3fr_2fr_1fr] w-full border-b border-gray-300 font-medium text-base py-3">
           <div className="w-1/3">Hotels</div>

@@ -9,7 +9,7 @@ const Loader = () => {
     if (nextUrl) {
       setTimeout(() => {
         navigate(`/${nextUrl}`);
-      }, 8000);
+      }, 6000);
     }
   }, [nextUrl]);
   return (

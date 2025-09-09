@@ -22,7 +22,13 @@ const App = () => {
 
   return (
     <div>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            marginTop: "40px", // adjust this value as needed
+          },
+        }}
+      />
       {!isOwnerPath && <Navbar />}
       {showHotelReg && <HotelReg />}
       <div className="min-h-[70vh]">
