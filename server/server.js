@@ -20,7 +20,7 @@ const app = express();
 app.use(cors());
 
 // Api to listen to stripe webhooks
-app.post('api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)
+app.post('/api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)
 
 // due to insert the value in Db we use Post
 app.post('/api/clerk', bodyParser.raw({ type: 'application/json' }), clerkWebhooks);
