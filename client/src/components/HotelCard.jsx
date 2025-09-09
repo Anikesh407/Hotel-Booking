@@ -5,7 +5,7 @@ import { assets } from "../assets/assets";
 const HotelCard = ({ room, index, currency }) => {
   return (
     <Link
-      className="relative max-w-70 w-full rounded-xl overflow-hidden bg-white text-gray-500/90 shadow-[0px_4px_4px_rgba(0,0,0,0.05)]"
+      className="relative w-60 max-w-70 md:w-full rounded-xl overflow-hidden bg-white text-gray-500/90 shadow-[0px_4px_4px_rgba(0,0,0,0.05)]"
       to={"/rooms/" + room._id}
       onClick={() => scrollTo(0, 0)}
       key={room._id}

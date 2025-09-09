@@ -11,12 +11,16 @@ import connectCloudinary from "./configs/cloudinary.js";
 import roomRouter from "./routes/roomRouter.js";
 import bookingRouter from "./routes/bookingRoutes.js";
 import bodyParser from "body-parser";
+import { stripeWebhooks } from "./controllers/webhookController.js";
 
 dotenv.config();
 connectDB();
 connectCloudinary();
 const app = express();
 app.use(cors());
+
+// Api to listen to stripe webhooks
+app.post('api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)
 
 // due to insert the value in Db we use Post
 app.post('/api/clerk', bodyParser.raw({ type: 'application/json' }), clerkWebhooks);
