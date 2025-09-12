@@ -12,7 +12,7 @@ const RoomDetail = () => {
   const [mainImage, setMainImage] = useState(null);
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
-  const [guests, setGuest] = useState(1);
+  const [guests, setGuest] = useState(null);
   const [isAvailable, setIsAvailable] = useState(false);
 
   const checkAvailability = async () => {
@@ -206,10 +206,11 @@ const RoomDetail = () => {
                 id="guests"
                 placeholder="1"
                 onChange={(e) => {
-                  e.target.value > 0 && setGuest(e.target.value);
+                  setGuest(e.target.value);
                 }}
                 value={guests}
-                min="1"
+                min={1}
+                max={4}
                 className="max-w-20 rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none"
                 required
               />
