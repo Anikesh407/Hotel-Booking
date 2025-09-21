@@ -4,6 +4,7 @@ import { assets } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import { toast } from "react-hot-toast";
 import TestCard from "../components/TestCard";
+import NorLoader from "../components/NorLoader";
 
 const MyBookings = () => {
   const { user, axios, getToken, currency } = useAppContext();
@@ -53,6 +54,8 @@ const MyBookings = () => {
         subTitle="Easily manage your past, current, and upcoming hotel reservations in one place. Plan your trips seamlessly with just a few clicks"
         align="left"
       />
+      {bookings.length === 0 && <NorLoader />}
+      { bookings.length > 0 && <>
       <TestCard />
       <div className="max-w-6xl mt-8 w-full text-gray-800">
         <div className="hidden md:grid md:grid-cols-[3fr_2fr_1fr] w-full border-b border-gray-300 font-medium text-base py-3">
@@ -60,6 +63,7 @@ const MyBookings = () => {
           <div className="w-1/3">Date & Timings</div>
           <div className="w-1/3">Payment</div>
         </div>
+        
         {bookings.map((booking, index) => (
           <div
             key={booking._id}
@@ -136,6 +140,7 @@ const MyBookings = () => {
           </div>
         ))}
       </div>
+      </>}
     </div>
   );
 };

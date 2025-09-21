@@ -17,12 +17,14 @@ import Loader from "./components/Loader.jsx";
 import LoaderHome from "./components/LoaderHome.jsx";
 const App = () => {
   const isOwnerPath = useLocation().pathname.includes("owner");
+  const isUserPath = useLocation().pathname.includes("user");
+const isBookingsPath = useLocation().pathname.includes("mybookings");
 
   const { showHotelReg,rooms } = useAppContext();
 
   return (
     <div>
-      {rooms.length === 0?<LoaderHome />:
+      {  rooms.length === 0?<LoaderHome />:
       <>
       <Toaster
         toastOptions={{
@@ -48,9 +50,9 @@ const App = () => {
           </Route>
         </Routes>
       </div>
-      <Footer />
-      </>}
       
+      </>}
+      {!isOwnerPath && <Footer />}
     </div>
   );
 };
