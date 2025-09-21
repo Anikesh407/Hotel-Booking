@@ -16,3 +16,17 @@
 .font-playfair {
   font-family: playfair !important;
 }
+
+/* Shimmer animation for loader */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}

@@ -14,14 +14,16 @@ import AddRoom from "./Pages/hotelOwner/AddRoom";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext.jsx";
 import Loader from "./components/Loader.jsx";
-
+import LoaderHome from "./components/LoaderHome.jsx";
 const App = () => {
   const isOwnerPath = useLocation().pathname.includes("owner");
 
-  const { showHotelReg } = useAppContext();
+  const { showHotelReg,rooms } = useAppContext();
 
   return (
     <div>
+      {rooms.length === 0?<LoaderHome />:
+      <>
       <Toaster
         toastOptions={{
           style: {
@@ -47,6 +49,8 @@ const App = () => {
         </Routes>
       </div>
       <Footer />
+      </>}
+      
     </div>
   );
 };
