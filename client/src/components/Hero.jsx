@@ -31,7 +31,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-center px-6 md:px-16 lg:px-24 xl:32 text-white bg-[url('/src/assets/heroImg.png')] bg-no-repeat bg-cover bg-center opacity-93 h-screen ">
+    <div className="flex flex-col items-start justify-center px-6 md:px-16 lg:px-24 xl:32 text-white bg-[url('https://res.cloudinary.com/dieds7her/image/upload/v1758437644/BgHero_lds9nf.jpg')] bg-no-repeat bg-cover bg-center opacity-93 h-screen ">
       <p className="bg-[#49B9FF]/50 px-3.5 py-1 rounded-full mt-20 ">
         The Ultimate Hotel Experience
       </p>
