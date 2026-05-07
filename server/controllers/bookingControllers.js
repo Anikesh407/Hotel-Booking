@@ -78,7 +78,11 @@ export const createBooking = async (req, res) => {
     console.log(booking);
 
 
-
+    res.json({
+      success: true,
+      message: "Booking Created Successfully",
+      bookingId: booking._id
+    })
 
     const mailOption = {
       from: process.env.SENDER_EMAIL,
@@ -98,19 +102,18 @@ export const createBooking = async (req, res) => {
    
 
     </ul>
-    ${booking.isPaid ? '<p>We’re happy to confirm that your payment has been successfully received. Your booking is now fully secured</p>' : '<p><strong>Note:</strong> Your booking is confirmed, but payment is still pending. Please complete the payment at your earliest convenience to secure your reservation.</p>'
-        }
    <p>We can’t wait to welcome you!</p>
    <p>If you’d like to make any changes, just let us know.</p>
     `}
 
-    // Fire-and-forget email with a hard timeout to avoid hanging the event loop.
-    await transporter.sendMail(mailOption);
-    res.json({
-      success: true,
-      message: "Booking Created Successfully",
-      bookingId: booking._id
-    })
+    setImmediate(async () => {
+      try {
+        await transporter.sendMail(mailOption);
+      } catch (err) {
+        console.error("Mail Error:", err.message);
+      }
+    });
+
 
   } catch (error) {
     console.log(error);
