@@ -17,7 +17,7 @@ const MyBookings = () => {
       if (data.success) {
         setBookings(data.bookings);
       } else {
-        toast.error(error.message);
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);

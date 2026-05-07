@@ -64,18 +64,22 @@ const RoomDetail = () => {
             guests,
             paymentMethod: "Pay At Hotel",
           },
-          { headers: { Authorization: `Bearer ${await getToken()}` } }
+          { headers: { Authorization: `Bearer ${await getToken()}` } },
         );
 
+        console.log("Booking response:", data);
         if (data.success) {
-          toast.success(data.message);
-          navigate("/my-bookings");
-          scrollTo(0, 0);
+          toast.success("Booking Created Successfully");
+          setTimeout(() => {
+            navigate("/my-bookings");
+            window.scrollTo(0, 0);
+          }, 1000);
         } else {
           toast.error(data.message);
         }
       }
     } catch (error) {
+      console.log("Booking error:", error);
       toast.error(error.message);
     }
   };
