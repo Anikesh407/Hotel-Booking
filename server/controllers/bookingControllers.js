@@ -75,6 +75,7 @@ export const createBooking = async (req, res) => {
     })
 
     // Respond immediately; send email in background so SMTP issues don't block the API response.
+    console.log(booking);
     res.json({
       success: true,
       message: "Booking Created Successfully",
