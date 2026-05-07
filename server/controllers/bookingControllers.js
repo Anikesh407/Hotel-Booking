@@ -84,6 +84,13 @@ export const createBooking = async (req, res) => {
       bookingId: booking._id
     })
 
+    try {
+      await transporter.verify();
+      console.log("Server is ready to take our messages");
+    } catch (err) {
+      console.error("Verification failed:", err);
+    }
+
     const mailOption = {
       from: process.env.SENDER_EMAIL,
       to: req.user.email,
@@ -106,13 +113,16 @@ export const createBooking = async (req, res) => {
    <p>If you’d like to make any changes, just let us know.</p>
     `}
 
-    setImmediate(async () => {
-      try {
-        await transporter.sendMail(mailOption);
-      } catch (err) {
-        console.error("Mail Error:", err.message);
-      }
-    });
+   try {
+  console.log("Sending mail to:", req.user.email);
+
+  const info = await transporter.sendMail(mailOption);
+
+  console.log("MAIL SENT:", info);
+
+} catch (err) {
+  console.error("Mail Error:", err);
+}
 
 
   } catch (error) {
