@@ -2,7 +2,7 @@
 import Booking from "../models/Booking.js"
 import Room from "../models/Room.js";
 import Hotel from "../models/Hotel.js";
-import transporter from "../configs/nodemailer.js";
+import transporter from "../configs/nodemailer.js"
 import Stripe from 'stripe'
 
 const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
@@ -76,21 +76,9 @@ export const createBooking = async (req, res) => {
 
     // Respond immediately; send email in background so SMTP issues don't block the API response.
     console.log(booking);
-    res.json({
-      success: true,
-      message: "Booking Created Successfully",
-      bookingId: booking._id
-    })
 
-    const hasSmtp =
-      Boolean(process.env.SMTP_USER) &&
-      Boolean(process.env.SMTP_PASS) &&
-      Boolean(process.env.SENDER_EMAIL);
 
-    if (!hasSmtp || !req.user?.email) {
-      console.warn("Skipping booking email (SMTP not configured or user email missing).");
-      return;
-    }
+
 
     const mailOption = {
       from: process.env.SENDER_EMAIL,
@@ -117,22 +105,12 @@ export const createBooking = async (req, res) => {
     `}
 
     // Fire-and-forget email with a hard timeout to avoid hanging the event loop.
-    setImmediate(async () => {
-  try {
-    const info = await transporter.sendMail(mailOption);
-
-    console.log("Message sent:", info.messageId);
-
-  } catch (err) {
-    console.error("Error while sending mail:", {
-      message: err?.message,
-      code: err?.code,
-      command: err?.command,
-      response: err?.response,
-      responseCode: err?.responseCode,
-    });
-  }
-});
+    await transporter.sendMail(mailOption);
+    res.json({
+      success: true,
+      message: "Booking Created Successfully",
+      bookingId: booking._id
+    })
 
   } catch (error) {
     console.log(error);
