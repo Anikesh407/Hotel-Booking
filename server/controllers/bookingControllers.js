@@ -107,15 +107,15 @@ export const createBooking = async (req, res) => {
 
     // Fire-and-forget email with a hard timeout to avoid hanging the event loop.
     setImmediate(async () => {
-      try {
-        await Promise.race([
-          transporter.sendMail(mailOption),
-          new Promise((_, reject) => setTimeout(() => reject(new Error("Email send timeout")), 10_000)),
-        ]);
-      } catch (emailError) {
-        console.log("Email sending failed:", emailError?.message || emailError);
-      }
-    });
+  try {
+    const info = await transporter.sendMail(mailOption);
+
+    console.log("Message sent:", info.messageId);
+
+  } catch (err) {
+    console.error("Error while sending mail:", err.message);
+  }
+});
 
   } catch (error) {
     console.log(error);
