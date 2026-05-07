@@ -12,12 +12,23 @@ import roomRouter from "./routes/roomRouter.js";
 import bookingRouter from "./routes/bookingRoutes.js";
 import bodyParser from "body-parser";
 import { stripeWebhooks } from "./controllers/webhookController.js";
+import transporter from "./configs/nodemailer.js";
 
 dotenv.config();
 connectDB();
 connectCloudinary();
 const app = express();
 app.use(cors());
+
+// Optional SMTP self-check (won't crash the server)
+if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+  transporter
+    .verify()
+    .then(() => console.log("SMTP transporter is ready."))
+    .catch((err) =>
+      console.error("SMTP verify failed:", { message: err?.message, code: err?.code })
+    );
+}
 
 // Api to listen to stripe webhooks
 app.post('/api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)

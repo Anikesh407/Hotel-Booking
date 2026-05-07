@@ -82,12 +82,22 @@ export const createBooking = async (req, res) => {
       bookingId: booking._id
     })
 
+    const hasSmtp =
+      Boolean(process.env.SMTP_USER) &&
+      Boolean(process.env.SMTP_PASS) &&
+      Boolean(process.env.SENDER_EMAIL);
+
+    if (!hasSmtp || !req.user?.email) {
+      console.warn("Skipping booking email (SMTP not configured or user email missing).");
+      return;
+    }
+
     const mailOption = {
       from: process.env.SENDER_EMAIL,
       to: req.user.email,
       subject: 'Hotel Booking Details',
       html: `
-    <h2>Your Booking Details<h2/>
+    <h2>Your Booking Details</h2>
     <p>Dear ${req.user.username}</p>
     <p>Thank you so much for your booking! We’re delighted to have the opportunity to host you and ensure your experience is a memorable one. Please find your booking details below:</p>
 
@@ -114,7 +124,13 @@ export const createBooking = async (req, res) => {
     console.log("Message sent:", info.messageId);
 
   } catch (err) {
-    console.error("Error while sending mail:", err.message);
+    console.error("Error while sending mail:", {
+      message: err?.message,
+      code: err?.code,
+      command: err?.command,
+      response: err?.response,
+      responseCode: err?.responseCode,
+    });
   }
 });
 
