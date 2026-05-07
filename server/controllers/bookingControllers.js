@@ -32,6 +32,10 @@ export const checkAvailabilityAPI = async (req, res) => {
     })
   } catch (error) {
     console.error("checkAvailability error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to check availability"
+    });
   }
 }
 
@@ -70,7 +74,13 @@ export const createBooking = async (req, res) => {
       totalPrice
     })
 
-    // send gmail to conform the booking
+    // Respond immediately; send email in background so SMTP issues don't block the API response.
+    res.json({
+      success: true,
+      message: "Booking Created Successfully",
+      bookingId: booking._id
+    })
+
     const mailOption = {
       from: process.env.SENDER_EMAIL,
       to: req.user.email,
@@ -84,7 +94,7 @@ export const createBooking = async (req, res) => {
     <li><strong>Booking ID:</strong>${booking._id}</li>
     <li><strong>Hotel Name:</strong>${roomData.hotel.name}</li>
     <li><strong>Location:</strong>${roomData.hotel.address}</li>
-    <li><strong>Date:</strong>${booking.checkInDate.toDateString()}</li>
+    <li><strong>Date:</strong>${new Date(booking.checkInDate).toDateString()}</li>
     <li><strong>Booking Amount:</strong>${process.env.CURRENCY || '₹'} ${booking.totalPrice}</li>
    
 
@@ -95,20 +105,21 @@ export const createBooking = async (req, res) => {
    <p>If you’d like to make any changes, just let us know.</p>
     `}
 
-    try {
-      await transporter.sendMail(mailOption);
-    } catch (emailError) {
-      console.log("Email sending failed:", emailError.message);
-    }
-
-    res.json({
-      success: true,
-      message: "Booking Created Successfully"
-    })
+    // Fire-and-forget email with a hard timeout to avoid hanging the event loop.
+    setImmediate(async () => {
+      try {
+        await Promise.race([
+          transporter.sendMail(mailOption),
+          new Promise((_, reject) => setTimeout(() => reject(new Error("Email send timeout")), 10_000)),
+        ]);
+      } catch (emailError) {
+        console.log("Email sending failed:", emailError?.message || emailError);
+      }
+    });
 
   } catch (error) {
     console.log(error);
-    res.json({
+    res.status(500).json({
       success: false,
       message: error.message
     })
